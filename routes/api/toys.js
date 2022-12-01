@@ -72,7 +72,7 @@ router.put("/:id", auth, upload.single("toyimg"), async (req, res) => {
     let toy = await toysModel.selectToyById(req.params.id);
 
     let img = "";
-    if (req.file) img = "/uploads/" + req.file.filename;
+    if (req.file) img = "/uploads/" + req.file.filename
     else img = toy.img;
 
     await toysModel.updateToyById(

@@ -65,7 +65,7 @@ router.get("/", auth, async (req, res) => {
 router.put("/:id", auth, upload.single("toyimg"), async (req, res) => {
   try {
     if (!req.payload.isAdmin)
-      return res.status(400).send("only admin can edit toys");
+      return res.status(400).send("Only admin can edit toys");
 
     const validatedValue = await toysValidation.ToyValidation(req.body);
 

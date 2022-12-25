@@ -20,6 +20,7 @@ const createTransporter = async () => {
         else resolve(token);
       });
     });
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {

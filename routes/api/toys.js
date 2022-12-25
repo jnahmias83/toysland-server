@@ -27,17 +27,36 @@ router.post("/", auth, upload.single("toyimg"), async (req, res) => {
       validatedValue.description,
       validatedValue.category,
       validatedValue.price,
-      img
+      img,
+      req.payload._id
     );
     res.status(201).json(toy);
   } catch (err) {
-    res.status(400).json({ error: err });
+    res.status(400).send(err);
   }
 });
 
 router.get("/fewtoys", auth, async (req, res) => {
   try {
     const toys = await toysModel.selectFiewToys();
+    res.json(toys);
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
+});
+
+router.get("/my-toys", auth, async (req, res) => {
+  try {
+    const toys = await toysModel.selectUserToys(req.payload._id);
+    res.json(toys);
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
+});
+
+router.get("/preferedtoys", auth, async (req, res) => {
+  try {
+    const toys = await toysModel.selectUserPreferedToys(req.payload._id);
     res.json(toys);
   } catch (err) {
     res.status(400).json({ error: err });
@@ -62,6 +81,24 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+router.put("/settoprefered/:id", auth, async (req, res) => {
+  try {
+    await toysModel.setToPrefered(
+      req.params.id,
+      req.body.name,
+      req.body.description,
+      req.body.category,
+      req.body.price,
+      req.body.img,
+      req.body.isPrefered,
+      req.payload._id
+    );
+    res.status(201).json();
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
+});
+
 router.put("/:id", auth, upload.single("toyimg"), async (req, res) => {
   try {
     if (!req.payload.isAdmin)
@@ -72,7 +109,7 @@ router.put("/:id", auth, upload.single("toyimg"), async (req, res) => {
     let toy = await toysModel.selectToyById(req.params.id);
 
     let img = "";
-    if (req.file) img = "/uploads/" + req.file.filename
+    if (req.file) img = "/uploads/" + req.file.filename;
     else img = toy.img;
 
     await toysModel.updateToyById(
@@ -81,7 +118,9 @@ router.put("/:id", auth, upload.single("toyimg"), async (req, res) => {
       validatedValue.description,
       validatedValue.category,
       validatedValue.price,
-      img
+      img,
+      validatedValue.isPrefered,
+      req.payload._id
     );
     res.status(201).json("Toy updated successfully");
   } catch (err) {

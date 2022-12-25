@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const forgetPasswordValidation = require("../../validation/forgetPassword.validation");
-const usersModel = require("../../models/UsersAndCards.model");
+const usersModel = require("../../models/Users.model");
 const generateRandomAlphaNum = require("../../util/generateRandomAlphaNum");
 const jwt = require("../../config/jwt");
 const sendEmail = require("../../config/mailer");
@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
       process.env.EMAIL_EMAIL,
       validatedValue.email,
       "reset password",
-      `<a href="${link}">click here to reset your password</a>`
+      `<a href="${link}">Click here to reset your password</a>`
     );
 
     res.json({ msg: "if your email exists you will receive an email" });

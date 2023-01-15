@@ -114,7 +114,7 @@ router.delete("/paypal", auth, async (req, res) => {
       html += `<td style='text-align:center;border:1px solid black;'>${r.quantity}</td>`;
       html += `<td style='text-align:center;border:1px solid black;'>${
         r.toy.price * r.quantity
-      }*</td>`;
+      } </td>`;
       html += "</tr>";
     }
     html += `<tr style='background-color:black;color:white'><td colspan='5' style='text-align:right'>Total to pay:</td><td style='text-align:center;'>${sumToPay.toFixed(2)} $USA</td></tr>`;
